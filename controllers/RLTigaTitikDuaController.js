@@ -251,86 +251,86 @@ export const insertRLTigaTitikDua =  async (req, res) => {
 }
 
 export const updateRLTigaTitikDua = async(req,res)=>{
-    let errorPasienAkhirBulan = false
-    let errorJumlahHariPerawatan = false
-    let errorJumlahAlokasiTempatTidurAwalBulan = false
-    let errorPerbandinganJumlahHariPerawatan = false
-    let errorJumlahLamaDirawat = false
+    // let errorPasienAkhirBulan = false
+    // let errorJumlahHariPerawatan = false
+    // let errorJumlahAlokasiTempatTidurAwalBulan = false
+    // let errorPerbandinganJumlahHariPerawatan = false
+    // let errorJumlahLamaDirawat = false
 
-    // hitung jumlah pasien akhir bulan
-    const pasienAkhirBulan = (parseInt(req.body.pasienAwalBulan) + parseInt(req.body.pasienMasuk) + parseInt(req.body.pasienPindahan)) -
-    (parseInt(req.body.pasienDipindahkan) + parseInt(req.body.pasienKeluarHidup) + parseInt(req.body.pasienKeluarMatiKurangDari48Jam) + 
-    parseInt(req.body.pasienKeluarMatiLebihDariAtauSamaDengan48Jam))
+    // // hitung jumlah pasien akhir bulan
+    // const pasienAkhirBulan = (parseInt(req.body.pasienAwalBulan) + parseInt(req.body.pasienMasuk) + parseInt(req.body.pasienPindahan)) -
+    // (parseInt(req.body.pasienDipindahkan) + parseInt(req.body.pasienKeluarHidup) + parseInt(req.body.pasienKeluarMatiKurangDari48Jam) + 
+    // parseInt(req.body.pasienKeluarMatiLebihDariAtauSamaDengan48Jam))
 
-    // hitung jumlah hari perawatan
-    const jumlahHariPerawatan = parseInt(req.body.rincianHariPerawatanKelasVVIP) +
-        parseInt(req.body.rincianHariPerawatanKelasVIP) + 
-        parseInt(req.body.rincianHariPerawatanKelas1) + 
-        parseInt(req.body.rincianHariPerawatanKelas2) + 
-        parseInt(req.body.rincianHariPerawatanKelas3) + 
-        parseInt(req.body.rincianHariPerawatanKelasKhusus)
+    // // hitung jumlah hari perawatan
+    // const jumlahHariPerawatan = parseInt(req.body.rincianHariPerawatanKelasVVIP) +
+    //     parseInt(req.body.rincianHariPerawatanKelasVIP) + 
+    //     parseInt(req.body.rincianHariPerawatanKelas1) + 
+    //     parseInt(req.body.rincianHariPerawatanKelas2) + 
+    //     parseInt(req.body.rincianHariPerawatanKelas3) + 
+    //     parseInt(req.body.rincianHariPerawatanKelasKhusus)
 
-    const jumlahAlokasiTempatTidurAwalBulan = parseInt(req.body.jumlahAlokasiTempatTidurAwalBulan)
+    // const jumlahAlokasiTempatTidurAwalBulan = parseInt(req.body.jumlahAlokasiTempatTidurAwalBulan)
 
-    if (pasienAkhirBulan < 0) {
-        errorPasienAkhirBulan = true
-    }
+    // if (pasienAkhirBulan < 0) {
+    //     errorPasienAkhirBulan = true
+    // }
 
-    if (jumlahHariPerawatan <= 0) {
-        errorJumlahHariPerawatan = true
-    }
+    // if (jumlahHariPerawatan <= 0) {
+    //     errorJumlahHariPerawatan = true
+    // }
 
-    if (jumlahAlokasiTempatTidurAwalBulan <= 0) {
-        errorJumlahAlokasiTempatTidurAwalBulan = true
-    }
+    // if (jumlahAlokasiTempatTidurAwalBulan <= 0) {
+    //     errorJumlahAlokasiTempatTidurAwalBulan = true
+    // }
 
-    if (jumlahHariPerawatan < req.body.jumlahLamaDirawat) {
-        errorPerbandinganJumlahHariPerawatan = true
-    }
+    // if (jumlahHariPerawatan < req.body.jumlahLamaDirawat) {
+    //     errorPerbandinganJumlahHariPerawatan = true
+    // }
 
-    if (req.body.jumlahLamaDirawat < (parseInt(req.body.pasienAwalBulan) + parseInt(req.body.pasienMasuk) + parseInt(req.body.pasienPindahan))) {
-        errorJumlahLamaDirawat = true
-    }
+    // if (req.body.jumlahLamaDirawat < (parseInt(req.body.pasienAwalBulan) + parseInt(req.body.pasienMasuk) + parseInt(req.body.pasienPindahan))) {
+    //     errorJumlahLamaDirawat = true
+    // }
 
-    if (errorPasienAkhirBulan) {
-        res.status(400).send({
-            status: false,
-            message: 'pasien akhir bulan tidak boleh kurang dari nilai 0'
-        })
-        return
-    }
+    // if (errorPasienAkhirBulan) {
+    //     res.status(400).send({
+    //         status: false,
+    //         message: 'pasien akhir bulan tidak boleh kurang dari nilai 0'
+    //     })
+    //     return
+    // }
 
-    if (errorJumlahHariPerawatan) {
-        res.status(400).send({
-            status: false,
-            message: 'jumlah hari perawatan tidak boleh kurang dari nilai 1'
-        })
-        return
-    }
+    // if (errorJumlahHariPerawatan) {
+    //     res.status(400).send({
+    //         status: false,
+    //         message: 'jumlah hari perawatan tidak boleh kurang dari nilai 1'
+    //     })
+    //     return
+    // }
 
-    if (errorJumlahAlokasiTempatTidurAwalBulan) {
-        res.status(400).send({
-            status: false,
-            message: 'jumlah alokasi tempat tidur awal bulan tidak boleh kurang dari nilai 1'
-        })
-        return
-    }
+    // if (errorJumlahAlokasiTempatTidurAwalBulan) {
+    //     res.status(400).send({
+    //         status: false,
+    //         message: 'jumlah alokasi tempat tidur awal bulan tidak boleh kurang dari nilai 1'
+    //     })
+    //     return
+    // }
 
-    if (errorPerbandinganJumlahHariPerawatan) {
-        res.status(400).send({
-            status: false,
-            message: 'jumlah hari perawatan tidak boleh lebih kecil dari jumlah lama dirawat'
-        })
-        return
-    }
+    // if (errorPerbandinganJumlahHariPerawatan) {
+    //     res.status(400).send({
+    //         status: false,
+    //         message: 'jumlah hari perawatan tidak boleh lebih kecil dari jumlah lama dirawat'
+    //     })
+    //     return
+    // }
 
-    if (errorJumlahLamaDirawat) {
-        res.status(400).send({
-            status: false,
-            message: 'jumlah lama dirawat tidak boleh lebih kecil dari pasien awal bulan + pasien masuk + pasien pindahan'
-        })
-        return
-    }
+    // if (errorJumlahLamaDirawat) {
+    //     res.status(400).send({
+    //         status: false,
+    //         message: 'jumlah lama dirawat tidak boleh lebih kecil dari pasien awal bulan + pasien masuk + pasien pindahan'
+    //     })
+    //     return
+    // }
 
     try{
         const update = await rlTigaTitikDuaDetail.update(
