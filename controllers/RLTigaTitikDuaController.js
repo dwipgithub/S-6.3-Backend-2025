@@ -135,9 +135,9 @@ export const insertRLTigaTitikDua =  async (req, res) => {
         //     errorPerbandinganJumlahHariPerawatan = true
         // }
 
-        if (element.jumlahLamaDirawat < (parseInt(element.pasienAwalBulan) + parseInt(element.pasienMasuk) + parseInt(element.pasienPindahan))) {
-            errorJumlahLamaDirawat = true
-        }
+        // if (element.jumlahLamaDirawat < (parseInt(element.pasienAwalBulan) + parseInt(element.pasienMasuk) + parseInt(element.pasienPindahan))) {
+        //     errorJumlahLamaDirawat = true
+        // }
     })
 
     if (errorPasienAkhirBulan) {
