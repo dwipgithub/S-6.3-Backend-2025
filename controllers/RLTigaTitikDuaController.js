@@ -288,9 +288,9 @@ export const updateRLTigaTitikDua = async(req,res)=>{
         errorPerbandinganJumlahHariPerawatan = true
     }
 
-    // if (req.body.jumlahLamaDirawat < (parseInt(req.body.pasienAwalBulan) + parseInt(req.body.pasienMasuk) + parseInt(req.body.pasienPindahan))) {
-    //     errorJumlahLamaDirawat = true
-    // }
+    if (req.body.jumlahLamaDirawat < (parseInt(req.body.pasienAwalBulan) + parseInt(req.body.pasienMasuk) + parseInt(req.body.pasienPindahan))) {
+        errorJumlahLamaDirawat = true
+    }
 
     if (errorPasienAkhirBulan) {
         res.status(400).send({
@@ -324,13 +324,13 @@ export const updateRLTigaTitikDua = async(req,res)=>{
         return
     }
 
-    // if (errorJumlahLamaDirawat) {
-    //     res.status(400).send({
-    //         status: false,
-    //         message: 'jumlah lama dirawat tidak boleh lebih kecil dari pasien awal bulan + pasien masuk + pasien pindahan'
-    //     })
-    //     return
-    // }
+    if (errorJumlahLamaDirawat) {
+        res.status(400).send({
+            status: false,
+            message: 'jumlah lama dirawat tidak boleh lebih kecil dari pasien awal bulan + pasien masuk + pasien pindahan'
+        })
+        return
+    }
 
     try{
         const update = await rlTigaTitikDuaDetail.update(
