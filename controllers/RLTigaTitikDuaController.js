@@ -95,8 +95,8 @@ export const insertRLTigaTitikDua =  async (req, res) => {
     let errorPasienAkhirBulan = false
     let errorJumlahHariPerawatan = false
     let errorJumlahAlokasiTempatTidurAwalBulan = false
-    let errorPerbandinganJumlahHariPerawatan = false
-    let errorJumlahLamaDirawat = false
+    // let errorPerbandinganJumlahHariPerawatan = false
+    // let errorJumlahLamaDirawat = false
     req.body.data.forEach(element => { 
         // hitung jumlah pasien akhir bulan
         const pasienAkhirBulan = (parseInt(element.pasienAwalBulan) + parseInt(element.pasienMasuk) + parseInt(element.pasienPindahan)) -
@@ -172,13 +172,13 @@ export const insertRLTigaTitikDua =  async (req, res) => {
     //     return
     // }
 
-    if (errorJumlahLamaDirawat) {
-        res.status(400).send({
-            status: false,
-            message: 'jumlah lama dirawat tidak boleh lebih kecil dari pasien awal bulan + pasien masuk + pasien pindahan'
-        })
-        return
-    }
+    // if (errorJumlahLamaDirawat) {
+    //     res.status(400).send({
+    //         status: false,
+    //         message: 'jumlah lama dirawat tidak boleh lebih kecil dari pasien awal bulan + pasien masuk + pasien pindahan'
+    //     })
+    //     return
+    // }
 
     const periodeBulan = String(req.body.periodeBulan)
     const periodeTahun = String(req.body.periodeTahun)
