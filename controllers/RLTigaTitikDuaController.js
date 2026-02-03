@@ -316,21 +316,21 @@ export const updateRLTigaTitikDua = async(req,res)=>{
         return
     }
 
-    // if (errorPerbandinganJumlahHariPerawatan) {
-    //     res.status(400).send({
-    //         status: false,
-    //         message: 'jumlah hari perawatan tidak boleh lebih kecil dari jumlah lama dirawat'
-    //     })
-    //     return
-    // }
+    if (errorPerbandinganJumlahHariPerawatan) {
+        res.status(400).send({
+            status: false,
+            message: 'jumlah hari perawatan tidak boleh lebih kecil dari jumlah lama dirawat'
+        })
+        return
+    }
 
-    // if (errorJumlahLamaDirawat) {
-    //     res.status(400).send({
-    //         status: false,
-    //         message: 'jumlah lama dirawat tidak boleh lebih kecil dari pasien awal bulan + pasien masuk + pasien pindahan'
-    //     })
-    //     return
-    // }
+    if (errorJumlahLamaDirawat) {
+        res.status(400).send({
+            status: false,
+            message: 'jumlah lama dirawat tidak boleh lebih kecil dari pasien awal bulan + pasien masuk + pasien pindahan'
+        })
+        return
+    }
 
     try{
         const update = await rlTigaTitikDuaDetail.update(
