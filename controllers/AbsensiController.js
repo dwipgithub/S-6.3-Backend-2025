@@ -77,6 +77,8 @@ export const getAbsensiNew = async (req, res) => {
         provinsiId: value.provinsiId,
         kabKotaId: value.kabKotaId,
         nama: value.nama,
+        page: 1,
+        limit: 1000,
       },
       headers: {
         Authorization: `Bearer ${token}`,
