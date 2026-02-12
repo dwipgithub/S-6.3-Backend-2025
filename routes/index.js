@@ -16,7 +16,7 @@ import { verifyCsrfToken } from "../middleware/VerifyCsrfToken.js";
 import { refreshToken } from "../controllers/RefreshTokenController.js";
 
 // Absensi
-import { getAbsensi } from "../controllers/AbsensiController.js";
+import { getAbsensi, getAbsensiNew} from "../controllers/AbsensiController.js";
 
 //Punya Bibo Ganteng
 
@@ -342,7 +342,8 @@ router.get("/apisirs6v2/login", loginSSO);
 router.get("/apisirs6v2/loginadmin", loginSSOAdmin);
 
 // Absensi
-router.get("/apisirs6v2/absensi", verifyToken, getAbsensi);
+// router.get("/apisirs6v2/absensi", verifyToken, getAbsensi);
+router.get("/apisirs6v2/absensi", verifyToken, getAbsensiNew);
 
 // User
 router.get("/apisirs/users", verifyToken, getUser);
