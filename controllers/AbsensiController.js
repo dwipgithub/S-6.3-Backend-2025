@@ -126,7 +126,9 @@ export const getAbsensiNew = async (req, res) => {
       },
     });
 
-    const rsList = response.data.data;
+    const rsList = response.data.data
+      ? response.data.data.filter((item) => item.statusAktivasi == 1)
+      : [];
 
     if (!rsList || rsList.length === 0) {
       return res.status(200).send({
