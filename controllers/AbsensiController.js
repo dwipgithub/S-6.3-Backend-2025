@@ -34,6 +34,47 @@ export const getAbsensi = (req, res) => {
     })
 }
 
+const generateEmptyTemplate = () => {
+  const template = { persentase_pengisian: 0 };
+  const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+  // RL 3.1 - 3.10
+  ["31", "32", "33", "34", "35", "36", "37", "38", "39", "310"].forEach(
+    (rl) => {
+      months.forEach((m) => (template[`rl_${rl}_bulan_${m}`] = 0));
+    },
+  );
+
+  // RL 3.11
+  template["rl_311"] = 0;
+
+  // RL 3.12
+  months.forEach((m) => (template[`rl_312_bulan_${m}`] = 0));
+
+  // RL 3.13
+  template["rl_313"] = 0;
+
+  // RL 3.14
+  months.forEach((m) => (template[`rl_314_bulan_${m}`] = 0));
+
+  // RL 3.15 - 3.19
+  ["315", "316", "317", "318", "319"].forEach(
+    (rl) => (template[`rl_${rl}`] = 0),
+  );
+
+  // RL 4.1 - 4.3
+  ["41", "42", "43"].forEach((rl) => {
+    months.forEach((m) => (template[`rl_${rl}_bulan_${m}`] = 0));
+  });
+
+  // RL 5.1 - 5.3
+  ["51", "52", "53"].forEach((rl) => {
+    months.forEach((m) => (template[`rl_${rl}_bulan_${m}`] = 0));
+  });
+
+  return template;
+};
+
 export const getAbsensiNew = async (req, res) => {
   const joi = Joi.extend(joiDate);
 
@@ -102,15 +143,26 @@ export const getAbsensiNew = async (req, res) => {
     delete req.query.nama;
 
     get(req, (err, results) => {
-      const message = results.length ? "data found" : "data not found";
+      const message = rsList.length ? "data found" : "data not found";
 
-      const data = results.map((result) => {
-        const rs = rsList.find((item) => item.kode == result.rs_id);
+      const template = generateEmptyTemplate();
+
+      const data = rsList.map((rs) => {
+        const result = results.find((item) => item.rs_id == rs.kode);
+        if (result) {
+          return {
+            nama_rs: rs.nama,
+            provinsi_nama: rs.provinsiNama,
+            kab_kota: rs.kabKotaNama,
+            ...result,
+          };
+        }
         return {
-          nama_rs: rs ? rs.nama : result.nama_rs,
-          provinsi_nama: rs ? rs.provinsiNama : null,
-          kab_kota: rs ? rs.kabKotaNama : result.kab_kota,
-          ...result,
+          rs_id: rs.kode,
+          nama_rs: rs.nama,
+          provinsi_nama: rs.provinsiNama,
+          kab_kota: rs.kabKotaNama,
+          ...template,
         };
       });
 
@@ -126,4 +178,4 @@ export const getAbsensiNew = async (req, res) => {
       message: error,
     });
   }
-};
+};;
