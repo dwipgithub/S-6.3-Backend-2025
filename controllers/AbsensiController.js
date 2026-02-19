@@ -81,7 +81,7 @@ export const getAbsensiNew = async (req, res) => {
   const schema = joi.object({
     provinsiId: joi.string().required(),
     kabKotaId: joi.string().allow("").optional(),
-    nama: joi.string().allow("").optional(),
+    namaRs: joi.string().allow("").optional(),
     tahun: joi.string().required(),
   });
 
@@ -117,7 +117,7 @@ export const getAbsensiNew = async (req, res) => {
       params: {
         provinsiId: value.provinsiId,
         kabKotaId: value.kabKotaId,
-        nama: value.nama,
+        nama: value.namaRs,
         page: 1,
         limit: 1000,
       },
@@ -126,8 +126,11 @@ export const getAbsensiNew = async (req, res) => {
       },
     });
 
-    const rsList = response.data.data
-      ? response.data.data.filter((item) => item.statusAktivasi == 1)
+     const rsList = response.data.data
+      ? response.data.data.filter(
+          (item) =>
+            item.statusAktivasi == 1 && item.jenis !== "RS Kapal/Bergerak",
+        )
       : [];
 
     if (!rsList || rsList.length === 0) {
@@ -142,7 +145,7 @@ export const getAbsensiNew = async (req, res) => {
     req.query.rsId = rsIds.join(";");
     delete req.query.provinsiId;
     delete req.query.kabKotaId;
-    delete req.query.nama;
+    delete req.query.namaRs;
 
     get(req, (err, results) => {
       const message = rsList.length ? "data found" : "data not found";
