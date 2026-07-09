@@ -11,10 +11,22 @@ import { jenisPelayananTigaTitikTiga } from "../models/JenisPelayananTigaTitikTi
 
 // Done
 export const getDataRLTigaTitikTiga = (req, res) => {
-  let where = { rs_id: req.user.satKerId };
+  // let where = { rs_id: req.user.satKerId };
 
-  if (req.query.tahun) where.tahun = req.query.tahun;
-  if (req.query.bulan) where.bulan = req.query.bulan;
+  // if (req.query.tahun) where.tahun = req.query.tahun;
+  // if (req.query.bulan) where.bulan = req.query.bulan;
+
+  const where = {};
+
+  where.rs_id = req.query.rsId || req.user.satKerId;
+
+  if (req.query.tahun) {
+    where.tahun = req.query.tahun;
+  }
+
+  if (req.query.bulan) {
+    where.bulan = req.query.bulan;
+  }
 
   rlTigaTitikTiga
     .findAll({
@@ -76,8 +88,12 @@ export const getDataRLTigaTitikTigaDetailPelayanan = (req, res) => {
         "luka_perempuan",
         "false_emergency",
       ],
+      // where: {
+      //   rs_id: req.user.satKerId,
+      //   tahun: req.query.tahun,
+      // },
       where: {
-        rs_id: req.user.satKerId,
+        rs_id: req.query.rsId || req.user.satKerId,
         tahun: req.query.tahun,
       },
       include: {
@@ -146,10 +162,8 @@ export const getDataRLTigaTitikTigaDetails = (req, res) => {
   rlTigaTitikTigaDetail
     .findOne({
       where: {
-        rs_id: req.user.satKerId,
-        user_id: req.user.id,
+        rs_id: req.query.rsId || req.user.satKerId,
         tahun: `${req.query.tahun}-${req.query.bulan}-01`,
-        // bulan: req.query.bulan,
         jenis_pelayanan_rl_tiga_titik_tiga_id: req.query.specificId,
       },
     })
@@ -340,7 +354,7 @@ export const insertDataRLTigaTitikTiga = async (req, res) => {
           luka_laki: Joi.number().min(0).optional(),
           luka_perempuan: Joi.number().min(0).optional(),
           false_emergency: Joi.number().min(0).optional(),
-        })
+        }),
       )
       .required(),
   });
@@ -354,7 +368,7 @@ export const insertDataRLTigaTitikTiga = async (req, res) => {
     return;
   }
 
-  const transaction = await databaseSIRS.transaction()
+  const transaction = await databaseSIRS.transaction();
   try {
     const resultInsertHeader = await rlTigaTitikTiga.create(
       {
@@ -364,7 +378,7 @@ export const insertDataRLTigaTitikTiga = async (req, res) => {
         rs_id: req.user.satKerId,
         bulan: req.body.bulan,
       },
-      { transaction }
+      { transaction },
     );
 
     const dataDetail = req.body.data.map((value, index) => {
@@ -393,26 +407,23 @@ export const insertDataRLTigaTitikTiga = async (req, res) => {
       };
     });
 
-    await rlTigaTitikTigaDetail.bulkCreate(
-      dataDetail,
-      {
-        transaction: transaction,
-        updateOnDuplicate: [
-          "total_pasien_rujukan",
-          "total_pasien_non_rujukan",
-          "tlp_dirawat",
-          "tlp_dirujuk",
-          "tlp_pulang",
-          "m_igd_laki",
-          "m_igd_perempuan",
-          "doa_laki",
-          "doa_perempuan",
-          "luka_laki",
-          "luka_perempuan",
-          "false_emergency",
-        ],
-      }
-    );
+    await rlTigaTitikTigaDetail.bulkCreate(dataDetail, {
+      transaction: transaction,
+      updateOnDuplicate: [
+        "total_pasien_rujukan",
+        "total_pasien_non_rujukan",
+        "tlp_dirawat",
+        "tlp_dirujuk",
+        "tlp_pulang",
+        "m_igd_laki",
+        "m_igd_perempuan",
+        "doa_laki",
+        "doa_perempuan",
+        "luka_laki",
+        "luka_perempuan",
+        "false_emergency",
+      ],
+    });
 
     await transaction.commit();
     res.status(201).send({
@@ -423,21 +434,21 @@ export const insertDataRLTigaTitikTiga = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error)
-    await transaction.rollback()
-    if (error.name === 'SequelizeUniqueConstraintError') {
+    console.log(error);
+    await transaction.rollback();
+    if (error.name === "SequelizeUniqueConstraintError") {
       res.status(400).send({
         status: false,
-        message: "Duplicate Entry"
-      })
+        message: "Duplicate Entry",
+      });
     } else {
       res.status(400).send({
         status: false,
-        message: error
-      })
+        message: error,
+      });
     }
   }
-}
+};
 
 // Done
 // export const updateDataRLTigaTitikTiga = async (req, res) => {
@@ -580,7 +591,7 @@ export const updateDataRLTigaTitikTiga = async (req, res) => {
           id: req.params.id,
           rs_id: req.user.satKerId,
         },
-      }
+      },
     );
 
     res.status(201).send({
@@ -594,7 +605,6 @@ export const updateDataRLTigaTitikTiga = async (req, res) => {
     });
   }
 };
-
 
 // Done
 export const deleteDataRLTigaTitikTiga = async (req, res) => {
