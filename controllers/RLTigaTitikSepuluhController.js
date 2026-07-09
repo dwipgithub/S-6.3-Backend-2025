@@ -10,10 +10,21 @@ import { jenisSpesialisTigaTitikSepuluh } from "../models/JenisSpesialisTigaTiti
 
 //new-----------------------------------------------------------------------------------------------------------
 export const getDataRLTigaTitikSepuluh = (req, res) => {
-  let where = { rs_id: req.user.satKerId };
+  // let where = { rs_id: req.user.satKerId };
 
-  if (req.query.tahun) where.tahun = req.query.tahun;
-  if (req.query.bulan) where.bulan = req.query.bulan;
+  // if (req.query.tahun) where.tahun = req.query.tahun;
+  // if (req.query.bulan) where.bulan = req.query.bulan;
+  const where = {
+    rs_id: req.query.rsId || req.user.satKerId,
+  };
+
+  if (req.query.tahun) {
+    where.tahun = req.query.tahun;
+  }
+
+  if (req.query.bulan) {
+    where.bulan = req.query.bulan;
+  }
 
   rlTigaTitikSepuluh
     .findAll({
@@ -75,7 +86,7 @@ export const getDataRLTigaTitikSepuluhDetailSpesialis = (req, res) => {
         "keluar_total_keluar",
       ],
       where: {
-        rs_id: req.user.satKerId,
+        rs_id: req.query.rsId || req.user.satKerId,
         tahun: req.query.tahun,
       },
       include: {
@@ -151,10 +162,15 @@ export const getDataRLTigaTitikSepuluhDetails = (req, res) => {
         },
       ],
       attributes: ["id", "tahun"],
+      // where: {
+      //   rs_id: req.user.satKerId,
+      //   user_id: req.user.id,
+      //   tahun: req.query.tahun,
+      // },
       where: {
-        rs_id: req.user.satKerId,
-        user_id: req.user.id,
-        tahun: req.param.tahun,
+        rs_id: req.query.rsId || req.user.satKerId,
+        tahun: req.query.tahun,
+        bulan: req.query.bulan,
       },
     })
     .then((results) => {
@@ -194,7 +210,7 @@ export const insertDataRLTigaTitikSepuluh = async (req, res) => {
           keluar_pasien_datang_sendiri: Joi.number().min(0),
           keluar_total_keluar: Joi.number().min(0),
           keluar_diterima_kembali: Joi.number().min(0),
-        })
+        }),
       )
       .required(),
   });
@@ -245,7 +261,7 @@ export const insertDataRLTigaTitikSepuluh = async (req, res) => {
         tahun: req.body.tahun,
         bulan: req.body.bulan,
       },
-      { transaction }
+      { transaction },
     );
 
     const dataDetail = req.body.data.map((value, index) => {
@@ -461,7 +477,7 @@ export const updateDataRLTigaTitikSepuluh = async (req, res) => {
           id: req.params.id,
           rs_id: req.user.satKerId,
         },
-      }
+      },
     );
     res.status(200).json({
       status: true,
